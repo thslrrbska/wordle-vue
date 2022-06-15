@@ -1,0 +1,17 @@
+.key-table {
+  width: 100%;
+  .key-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    .key {
+      height: 58px;
+      box-sizing: border-box;
+      padding: 0px 15px;
+      margin-right: 5px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}

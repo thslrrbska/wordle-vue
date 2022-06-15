@@ -1,0 +1,16 @@
+.worldle-table {
+  box-sizing: border-box;
+  padding: 20px;
+  .wordle-row {
+    width: 350px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    .wordle-char {
+      border: 2px solid $color-tone-4;
+      width: 60px;
+      line-height: 60px;
+    }
+  }
+}
