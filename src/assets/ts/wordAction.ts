@@ -12,9 +12,11 @@ interface Actions {
 }
 
 export default class WordAction implements Actions {
-  private word = "";
-  private isFindingDictionary = false;
-  constructor(private readonly limited = 5) {}
+  constructor(
+    private readonly limited = 5,
+    private word = "",
+    private isFindingDictionary = false
+  ) {}
   insertWord(char: string): void {
     if (this.word.length < this.limited) this.word += char;
   }

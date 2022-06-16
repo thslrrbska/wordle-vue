@@ -53,7 +53,10 @@ export default defineComponent({
       }
     };
     window.addEventListener("keydown", callback);
-    onUnmounted(() => window.removeEventListener("keydown", callback));
+    onUnmounted(() => {
+      window.removeEventListener("keydown", callback);
+      store.commit("game/updateQueryWord", "");
+    });
     return { query, matchStates, processWord };
   },
 });
