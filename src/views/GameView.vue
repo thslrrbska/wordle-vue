@@ -5,7 +5,7 @@
       :query="query"
       :matchStates="matchStates"
     />
-    <WordleKeyBoardVue />
+    <WordleKeyBoardVue @processWord="processWord" />
   </div>
 </template>
 
@@ -25,8 +25,8 @@ export default defineComponent({
     const query = computed(() => store.state.game.query);
     const matchStates = computed(() => store.state.game.matchStates);
     const wordAction = new WordAction(5);
-    const callback = async (event: KeyboardEvent) => {
-      const key = event.key;
+    const callback = async (event: KeyboardEvent) => processWord(event.key);
+    const processWord = async (key: string) => {
       if (key === "Enter" && !wordAction.getIsFindingDictionary) {
         const isWord = await wordAction.confirmWord();
         if (isWord) {
@@ -43,9 +43,8 @@ export default defineComponent({
           );
           wordAction.initWord();
         }
-        console.log(isWord);
       } else {
-        if (key === "Backspace") {
+        if (key === "Backspace" || key === "DEL") {
           wordAction.removeWord();
         } else if (/^[a-z]/i.test(key) && key.length === 1) {
           wordAction.insertWord(key.toUpperCase());
@@ -55,7 +54,7 @@ export default defineComponent({
     };
     window.addEventListener("keydown", callback);
     onUnmounted(() => window.removeEventListener("keydown", callback));
-    return { query, matchStates };
+    return { query, matchStates, processWord };
   },
 });
 </script>
