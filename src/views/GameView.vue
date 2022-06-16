@@ -10,8 +10,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, onUnmounted } from "vue";
 import { useStore } from "vuex";
+import WordAction from "../assets/ts/wordAction";
+import { getWordMatchStates } from "../assets/ts/utils/dictionary";
 import WordleQueryInputVue from "../components/WordleQueryInput.vue";
 import WordleKeyBoardVue from "../components/WordleKeyBoard.vue";
 
@@ -22,7 +24,37 @@ export default defineComponent({
     const store = useStore();
     const query = computed(() => store.state.game.query);
     const matchStates = computed(() => store.state.game.matchStates);
-
+    const wordAction = new WordAction(5);
+    const callback = async (event: KeyboardEvent) => {
+      const key = event.key;
+      if (key === "Enter" && !wordAction.getIsFindingDictionary) {
+        const isWord = await wordAction.confirmWord();
+        if (isWord) {
+          store.commit(
+            "game/updateMatchStates",
+            getWordMatchStates(
+              wordAction.getWord,
+              store.getters[`game/getAnswerMap`]
+            )
+          );
+          store.commit(
+            "game/increaseQueryInputCount",
+            store.state.game.count + 1
+          );
+          wordAction.initWord();
+        }
+        console.log(isWord);
+      } else {
+        if (key === "Backspace") {
+          wordAction.removeWord();
+        } else if (/^[a-z]/i.test(key) && key.length === 1) {
+          wordAction.insertWord(key.toUpperCase());
+        }
+        store.commit("game/updateQueryWord", wordAction.getWord);
+      }
+    };
+    window.addEventListener("keydown", callback);
+    onUnmounted(() => window.removeEventListener("keydown", callback));
     return { query, matchStates };
   },
 });
