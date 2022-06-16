@@ -1,8 +1,13 @@
 <template>
   <div class="worldle-table">
     <div class="wordle-row" v-for="(r, i) in maxRow" :key="i">
-      <div class="wordle-char" v-for="(c, j) in wordSize" :key="j">
-        {{ j }}
+      <div
+        class="wordle-char"
+        v-for="(c, j) in wordSize"
+        :class="matchStates[i] && matchStates[i][j]"
+        :key="j"
+      >
+        {{ query[i] ? query[i][j] : "" }}
       </div>
     </div>
   </div>
@@ -21,6 +26,14 @@ export default defineComponent({
     wordSize: {
       type: Number,
       default: 5,
+    },
+    query: {
+      type: Array,
+      default: () => [],
+    },
+    matchStates: {
+      type: Array,
+      default: () => [],
     },
   },
 });

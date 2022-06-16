@@ -10,7 +10,25 @@
     .wordle-char {
       border: 2px solid $color-tone-4;
       width: 60px;
-      line-height: 60px;
+      height: 60px;
+      display: flex;
+      font-size: 2em;
+      font-weight: bold;
+      justify-content: center;
+      align-items: center;
+
+      &.correct_spot {
+        background-color: $correct-spot-color;
+        color: $color-tone-6;
+      }
+      &.wrong_spot {
+        background-color: $wrong-spot-color;
+        color: $color-tone-6;
+      }
+      &.none_spot {
+        background-color: $none-spot-color;
+        color: $color-tone-6;
+      }
     }
   }
 }
