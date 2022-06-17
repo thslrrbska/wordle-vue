@@ -28,6 +28,14 @@ export const game: Module<GameState, RootState> = {
     },
   },
   mutations: {
+    initGameState: (state) => {
+      state.count = 0;
+      state.query = [];
+      state.matchStates = [];
+    },
+    changeAnswer: (state, answer) => {
+      state.answer = answer;
+    },
     increaseQueryInputCount: (state, count: number) => {
       state.count = count;
     },
