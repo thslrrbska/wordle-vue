@@ -49,10 +49,11 @@ export default defineComponent({
       router.push("/");
     };
     window.addEventListener("keydown", callback);
-    onUnmounted(() => {
+    onUnmounted(() => removeEvent());
+    const removeEvent = () => {
       window.removeEventListener("keydown", callback);
       store.commit("create/updateQueryWord", "");
-    });
+    };
     return { query, processWord };
   },
 });

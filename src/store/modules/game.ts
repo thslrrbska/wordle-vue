@@ -3,6 +3,7 @@ import { RootState } from "..";
 
 export interface GameState {
   answer: string;
+  gameState: boolean;
   count: number;
   query: string[];
   matchStates: string[][];
@@ -12,6 +13,7 @@ export const game: Module<GameState, RootState> = {
   namespaced: true,
   state: () => ({
     answer: "WORLD", // 정답
+    gameState: true, // 게임 진행 상태
     count: 0, // 정답 횟수
     query: [], // 워들 집합
     matchStates: [], // 워들 매치 상태
@@ -38,6 +40,9 @@ export const game: Module<GameState, RootState> = {
     },
     increaseQueryInputCount: (state, count: number) => {
       state.count = count;
+    },
+    updateGameState: (state, gameState) => {
+      state.gameState = gameState;
     },
     updateQueryWord: (state, word: string) => {
       state.query[state.count] = word;

@@ -8,7 +8,6 @@ interface Actions {
   insertWord(char: string): void;
   removeWord(): void;
   confirmWord(): Promise<boolean>;
-  initWord(): void;
 }
 
 export default class WordAction implements Actions {
@@ -20,8 +19,8 @@ export default class WordAction implements Actions {
   insertWord(char: string): void {
     if (this.word.length < this.limited) this.word += char;
   }
-  removeWord(): void {
-    this.word = this.word.slice(0, -1);
+  removeWord(end = -1): void {
+    this.word = this.word.slice(0, end);
   }
   async confirmWord(): Promise<boolean> {
     if (this.word.length === this.limited) {
@@ -41,10 +40,6 @@ export default class WordAction implements Actions {
       alert("단어를 전부 입력해주세요.");
       return false;
     }
-  }
-
-  initWord(): void {
-    this.word = "";
   }
 
   get getIsFindingDictionary(): boolean {

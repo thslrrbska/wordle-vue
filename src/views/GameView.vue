@@ -27,36 +27,42 @@ export default defineComponent({
     const wordAction = new WordAction(5);
     const callback = async (event: KeyboardEvent) => processWord(event.key);
     const processWord = async (key: string) => {
-      if (key === "Enter" && !wordAction.getIsFindingDictionary) {
-        const isWord = await wordAction.confirmWord();
-        if (isWord) {
-          store.commit(
-            "game/updateMatchStates",
-            getWordMatchStates(
+      if (store.state.game.gameState) {
+        if (key === "Enter" && !wordAction.getIsFindingDictionary) {
+          const isWord = await wordAction.confirmWord();
+          if (isWord) {
+            const wordMatchStates = getWordMatchStates(
               wordAction.getWord,
               store.getters[`game/getAnswerMap`]
-            )
-          );
-          store.commit(
-            "game/increaseQueryInputCount",
-            store.state.game.count + 1
-          );
-          wordAction.initWord();
+            );
+            store.commit("game/updateMatchStates", wordMatchStates);
+            store.commit(
+              "game/increaseQueryInputCount",
+              store.state.game.count + 1
+            );
+            wordAction.removeWord(0);
+            if (wordMatchStates.every((states) => states === "correct_spot")) {
+              alert("클리어 하셨습니다!!!!");
+              store.commit("game/updateGameState", false);
+              removeEvent();
+            }
+          }
+        } else {
+          if (key === "Backspace" || key === "DEL") {
+            wordAction.removeWord();
+          } else if (/^[a-z]/i.test(key) && key.length === 1) {
+            wordAction.insertWord(key.toUpperCase());
+          }
+          store.commit("game/updateQueryWord", wordAction.getWord);
         }
-      } else {
-        if (key === "Backspace" || key === "DEL") {
-          wordAction.removeWord();
-        } else if (/^[a-z]/i.test(key) && key.length === 1) {
-          wordAction.insertWord(key.toUpperCase());
-        }
-        store.commit("game/updateQueryWord", wordAction.getWord);
       }
     };
     window.addEventListener("keydown", callback);
-    onUnmounted(() => {
+    onUnmounted(() => removeEvent());
+    const removeEvent = () => {
       window.removeEventListener("keydown", callback);
       store.commit("game/updateQueryWord", "");
-    });
+    };
     return { query, matchStates, processWord };
   },
 });
