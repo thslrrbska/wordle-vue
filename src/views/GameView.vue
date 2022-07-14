@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onUnmounted } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "@/store";
 import WordAction from "../assets/ts/wordAction";
 import { getWordMatchStates } from "../assets/ts/utils/dictionary";
 import WordleQueryInputVue from "../components/WordleQueryInput.vue";

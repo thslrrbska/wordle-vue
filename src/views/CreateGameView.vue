@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onUnmounted } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "@/store";
 import { useRouter } from "vue-router";
 import WordleQueryInputVue from "../components/WordleQueryInput.vue";
 import WordleKeyBoardVue from "../components/WordleKeyBoard.vue";

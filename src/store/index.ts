@@ -1,12 +1,20 @@
-import { createStore } from "vuex";
+import { InjectionKey } from "vue";
+import { createStore, useStore as baseUseStore, Store } from "vuex";
 import { CreateState, create } from "./modules/create";
 import { GameState, game } from "./modules/game";
 
 export interface RootState {
-  Game: GameState;
-  Create: CreateState;
+  game: GameState;
+  create: CreateState;
 }
 
-export default createStore({
+export const key: InjectionKey<Store<RootState>> = Symbol();
+
+export const store = createStore<RootState>({
   modules: { game, create },
 });
+
+// define your own `useStore` composition function
+export function useStore() {
+  return baseUseStore(key);
+}
